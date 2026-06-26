@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ project.project_name }} | ProjectFlow</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body class="detail-page">
+    <div class="page-shell">
+        <header class="topbar">
+            <div class="brand-block">
+                <div class="brand-mark">PF</div>
+                <div>
+                    <p class="eyebrow">ProjectFlow</p>
+                    <h4>Project Details</h4>
+                </div>
+            </div>
+            <div class="topbar-actions">
+                <a class="ghost-link" href="{% url 'home' %}">Dashboard</a>
+                <a class="ghost-link" href="{% url 'add_task' project.id %}">Add Task</a>
+                <form method="POST" action="{% url 'delete_project' project.id %}" class="inline-form">
+                    {% csrf_token %}
+                    <button type="submit" class="danger-button small" onclick="return confirm('Delete this project and all its tasks?');">Delete Project</button>
+                </form>
+                <a class="ghost-link danger" href="{% url 'logout' %}">Logout</a>
+            </div>
+        </header>
+
+        <main class="detail-layout">
+            <section class="detail-hero panel-card">
+                <p class="eyebrow">Project overview</p>
+                <h1>{{ project.project_name }}</h1>
+                <p class="detail-description">{{ project.description }}</p>
+                <div class="detail-meta-grid">
+                    <div>
+                        <span>Current Status</span>
+                        <strong>{{ project.status }}</strong>
+                    </div>
+                    <div>
+                        <span>Deadline</span>
+                        <strong>{{ project.deadline }}</strong>
+                    </div>
+                    <div>
+                        <span>Total Tasks</span>
+                        <strong>{{ tasks|length }}</strong>
+                    </div>
+                </div>
+                <div class="align-right">
+                    <a class="primary-button" href="{% url 'add_task' project.id %}">Add Task</a>
+                </div>
+            </section>
+
+            <section class="task-list-panel">
+                <div class="section-header compact">
+                    <div>
+                        <p class="eyebrow">Execution</p>
+                        <h2>Tasks</h2>
+                    </div>
+                </div>
+
+                <div class="task-list">
+                    {% for task in tasks %}
+                    <article class="task-card">
+                        <div class="project-card-top">
+                            <span class="project-index">{{ forloop.counter }}</span>
+                            {% if task.status == 'Done' %}
+                            <span class="status-badge status-completed">Done</span>
+                            {% elif task.status == 'In Progress' %}
+                            <span class="status-badge status-active">In Progress</span>
+                            {% else %}
+                            <span class="status-badge status-hold">To Do</span>
+                            {% endif %}
+                        </div>
+                        <h3>{{ task.task_name }}</h3>
+                        <p>{{ task.description }}</p>
+                        <form method="POST" action="{% url 'delete_task' task.id %}" class="inline-form align-right">
+                            {% csrf_token %}
+                            <button type="submit" class="danger-button small" onclick="return confirm('Delete this task?');">Delete Task</button>
+                        </form>
+                    </article>
+                    {% empty %}
+                    <div class="empty-state compact-empty">
+                        <h3>No tasks added yet</h3>
+                        <p>Break this project into delivery steps by adding the first task.</p>
+                        <a class="primary-button" href="{% url 'add_task' project.id %}">Add First Task</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>

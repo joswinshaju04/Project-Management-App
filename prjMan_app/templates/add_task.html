@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Task | ProjectFlow</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body class="form-page">
+    <div class="page-shell">
+        <header class="topbar">
+            <div class="brand-block">
+                <div class="brand-mark">PF</div>
+                <div>
+                    <p class="eyebrow">ProjectFlow</p>
+                    <h4>Add Task</h4>
+                </div>
+            </div>
+            <div class="topbar-actions">
+                <a class="ghost-link" href="{% url 'project_detail' project.id %}">Back to Project</a>
+                <a class="ghost-link danger" href="{% url 'logout' %}">Logout</a>
+            </div>
+        </header>
+
+        <main class="form-layout">
+            <section class="form-intro panel-card">
+                <p class="eyebrow">Task planning</p>
+                <h1>Add a task to {{ project.project_name }}</h1>
+                <p>
+                    Break project work into clear steps with an owner-ready task card, a concise
+                    description, and a delivery state.
+                </p>
+            </section>
+
+            <section class="form-card">
+                <form method="POST" class="panel-form">
+                    {% csrf_token %}
+
+                    <label for="task_name">Task Name</label>
+                    <input type="text" id="task_name" name="task_name" placeholder="Enter task name" required>
+
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="6" placeholder="Describe the work to complete"></textarea>
+
+                    <label for="status">Status</label>
+                    <select id="status" name="status">
+                        <option value="To Do">To Do</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Done">Done</option>
+                    </select>
+
+                    <button type="submit" class="primary-button full-width">Add Task</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>

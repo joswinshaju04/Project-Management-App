@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | ProjectFlow</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body class="auth-page">
+    <div class="auth-shell">
+        <section class="auth-brand-panel">
+            <p class="eyebrow">ProjectFlow</p>
+            <h1>Ship software with a calmer, clearer workflow.</h1>
+            <p>
+                A focused workspace for developers and engineering teams to keep delivery,
+                planning, and task ownership visible.
+            </p>
+            <div class="feature-pills">
+                <span>Release planning</span>
+                <span>Task tracking</span>
+                <span>Engineering focus</span>
+            </div>
+        </section>
+
+        <section class="auth-card">
+            <p class="eyebrow">Welcome back</p>
+            <h2>Sign in</h2>
+            <p class="card-subtitle">Access your projects, deadlines, and delivery status.</p>
+            <form method="POST" class="panel-form">
+                {% csrf_token %}
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+                <button type="submit" class="primary-button full-width">Login</button>
+            </form>
+            <p class="form-footer">Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+        </section>
+    </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | ProjectFlow</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body class="auth-page">
+    <div class="auth-shell">
+        <section class="auth-brand-panel register-panel">
+            <p class="eyebrow">ProjectFlow</p>
+            <h1>Create a workspace for your team and your code.</h1>
+            <p>
+                Capture projects, align deadlines, and move through delivery with a cleaner
+                interface built for engineers.
+            </p>
+            <div class="feature-pills">
+                <span>Fast onboarding</span>
+                <span>Delivery visibility</span>
+                <span>Shared focus</span>
+            </div>
+        </section>
+
+        <section class="auth-card">
+            <p class="eyebrow">Get started</p>
+            <h2>Create account</h2>
+            <p class="card-subtitle">Register to manage projects and tasks in one place.</p>
+            <form method="POST" class="panel-form">
+                {% csrf_token %}
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Choose a username" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Create a password" required>
+
+                <button type="submit" class="primary-button full-width">Register</button>
+            </form>
+            <p class="form-footer">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        </section>
+    </div>
+</body>
+</html>

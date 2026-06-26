@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjectFlow Dashboard</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body class="dashboard-page">
+    <div class="page-shell">
+        <header class="topbar">
+            <div class="brand-block">
+                <div class="brand-mark">PF</div>
+                <div>
+                    <p class="eyebrow">ProjectFlow</p>
+                    <h4>Developer Project Dashboard</h4>
+                </div>
+            </div>
+            <div class="topbar-actions">
+                <a class="ghost-link" href="{% url 'create_project' %}">New Project</a>
+                <a class="ghost-link danger" href="{% url 'logout' %}">Logout</a>
+            </div>
+        </header>
+
+        <main>
+            <section class="hero-card">
+                <div class="hero-copy">
+                    <p class="eyebrow">Built for engineers</p>
+                    <h1>Plan releases, track delivery, and keep every project moving.</h1>
+                    <p class="hero-text">
+                        A clean workspace for technical teams to manage shipping dates,
+                        monitor status, and keep tasks visible without losing focus.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="primary-button" href="{% url 'create_project' %}">Create Project</a>
+                        
+                    </div>
+                </div>
+                <div class="stats-boxes">
+                    <div class="stat-box">
+                        <span class="stat-label">Total Projects</span>
+                        <strong>{{ total_projects }}</strong>
+                    </div>
+                    <div class="stat-box blue">
+                        <span class="stat-label">Active</span>
+                        <strong>{{ active_projects }}</strong>
+                    </div>
+                    <div class="stat-box green">
+                        <span class="stat-label">Completed</span>
+                        <strong>{{ completed_projects }}</strong>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-header">
+                <div>
+                    <p class="eyebrow">Workspace</p>
+                    <h2>Your Projects</h2>
+                </div>
+                
+            </section>
+
+            <section class="project-grid">
+                {% for project in items %}
+                <article class="project-card">
+                    <div class="project-card-top">
+                        <span class="project-index">{{ forloop.counter }}</span>
+                        {% if project.status == 'Active' %}
+                        <span class="status-badge status-active">Active</span>
+                        {% elif project.status == 'On Hold' %}
+                        <span class="status-badge status-hold">On Hold</span>
+                        {% else %}
+                        <span class="status-badge status-completed">Completed</span>
+                        {% endif %}
+                    </div>
+                    <h3>{{ project.project_name }}</h3>
+                    <p class="project-description">{{ project.description|truncatechars:120 }}</p>
+                    <div class="project-meta">
+                        <span>Deadline</span>
+                        <strong>{{ project.deadline|date:"M d, Y" }}</strong>
+                    </div>
+                    <div class="card-actions">
+                        <a class="secondary-button" href="{% url 'project_detail' project.id %}">View Details</a>
+                        <a class="add-task-button" href="{% url 'add_task' project.id %}">Add Task</a>
+                        <form method="POST" action="{% url 'delete_project' project.id %}" class="inline-form">
+                            {% csrf_token %}
+                            <button type="submit" class="danger-button" onclick="return confirm('Delete this project? This will also remove its tasks.');">Delete</button>
+                        </form>
+                    </div>
+                </article>
+                {% empty %}
+                <div class="empty-state">
+                    <h3>No projects yet</h3>
+                    <p>Start with a new project to map milestones, tasks, and deadlines.</p>
+                    <a class="primary-button" href="{% url 'create_project' %}">Create Your First Project</a>
+                </div>
+                {% endfor %}
+            </section>
+        </main>
+    </div>
+</body>
+</html>

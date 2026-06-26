@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Project | ProjectFlow</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body class="form-page">
+    <div class="page-shell">
+        <header class="topbar">
+            <div class="brand-block">
+                <div class="brand-mark">PF</div>
+                <div>
+                    <p class="eyebrow">ProjectFlow</p>
+                    <h4>New Project</h4>
+                </div>
+            </div>
+            <div class="topbar-actions">
+                <a class="ghost-link" href="{% url 'home' %}">Back to Dashboard</a>
+                <a class="ghost-link danger" href="{% url 'logout' %}">Logout</a>
+            </div>
+        </header>
+
+        <main class="form-layout">
+            <section class="form-intro panel-card">
+                <p class="eyebrow">Project setup</p>
+                <h1>Create a new project</h1>
+                <p>
+                    Define the scope, choose a delivery status, and set a deadline so the team
+                    can track the work from the start.
+                </p>
+            </section>
+
+            <section class="form-card">
+                <form method="POST" class="panel-form">
+                    {% csrf_token %}
+
+                    <label for="project_name">Project Name</label>
+                    <input type="text" id="project_name" name="project_name" placeholder="Enter project name" required>
+
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="6" placeholder="Describe the work, goals, and scope" required></textarea>
+
+                    <div class="form-grid-two">
+                        <div>
+                            <label for="status">Project Status</label>
+                            <select id="status" name="status" required>
+                                <option value="">Select status</option>
+                                <option value="Active">Active</option>
+                                <option value="On Hold">On Hold</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="deadline">Deadline</label>
+                            <input type="date" id="deadline" name="deadline" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="primary-button full-width">Create Project</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
